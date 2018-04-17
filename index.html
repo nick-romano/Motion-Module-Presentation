@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>ArcGIS for JavaScript Motion Module</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<style type="text/css">
+			table.tableizer-table {
+				font-size: 18px;
+				border: 1px solid #CCC; 
+				font-family: Arial, Helvetica, sans-serif;
+			} 
+			.tableizer-table td {
+				padding: 4px;
+				margin: 3px;
+				border: 1px solid #CCC;
+			}
+			.tableizer-table th {
+				background-color: #104E8B; 
+				color: #FFF;
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>Motion Module For The ArcGIS for JavaScript API</h2>
+					<p>Nick Romano</p>
+					<p>Graduate Student, University of Maryland</p>
+					<footer><a href= "https://github.com/nick-romano/arcgis-js-motion-module">
+						https://github.com/nick-romano/arcgis-js-motion-module
+					</a></footer>
+				</section>
+
+				<section data-markdown>
+					## Agenda
+					- Introduction
+					- Principles
+					- Inspiration
+					- Data
+					- Methods
+				</section>
+				<section data-markdown>
+					## Introduction
+					- Current APIs such as the ESRI ArcGIS for JavaScript API, the Google Maps API, and Leaflet, allow for quick rendering of point, line, and polygon data on a map
+					- But none have an easy way to create animations between multiple points, which could add extra information to a mapping visualization project. 
+				</section>
+				<section data-markdown>
+					## Introduction ( continued )
+					- My project intends to fill the void for this functionality within the ArcGIS for JavaScript API through the development of a new animation module, allowing users to render their time-series GIS data in a new and novel way.
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Inspiration
+						- At work, we were looking at a dataset that had the address of specific people over a couple years
+						- Wanted to visualize the people who moved and where
+						- Created a proof of concept for animating change between years and thought it was a useful visualization
+					</section>
+					<section>
+						<h3>Proof of Concept</h3>
+						<iframe src="https://nick-romano.github.io/arcgis-js-motion-module/" height="500px" width="1000px"></iframe>
+					</section>
+					<section data-markdown>
+						## Bertin's Principle Types of Movement
+						- continuous motion
+						- generation of points
+						- lines or areas 
+						- variable speeds
+						- and systems of relations (Bertin and Berg 2010). 
+					</section>
+					<section>
+						<h3>Continuous Motion</h3>
+						<iframe height="500px" width="1000px" src="http://esri.github.io/wind-js/"></iframe>
+						<footer>source: <a src="http://esri.github.io/wind-js/">http://esri.github.io/wind-js/</a></footer>
+					</section>
+					<section>
+						<h3>Generation of Points</h3>
+						<iframe height="500px" width="1000px" src="https://esri.github.io/geotour-js/"></iframe>
+						<footer>source: <a src="https://esri.github.io/geotour-js/">https://esri.github.io/geotour-js/</a></footer>
+					</section>
+					<section>
+						<h3>Systems of relations</h3>
+						<iframe height="500px" width="1000px" src="https://sarahbellum.github.io/Canvas-Flowmap-Layer/demos/comparison/"></iframe>
+						<footer style="font-size: 16px">source : <a src="https://sarahbellum.github.io/Canvas-Flowmap-Layer/demos/comparison">https://sarahbellum.github.io/Canvas-Flowmap-Layer/demos/comparison</a></footer>
+					</section>
+				</section>
+
+				<section data-markdown>
+						## Objectives
+						- Produce JavaScript modules that can be loaded through Dojo AMD into version 4 of the ArcGIS for JavaScript API
+						- Support 2D visualizations of temporal data
+						- Enable developers to easily render an animated path between two points within a mapping visualization
+						- Be able to interpret date information and will be able to visualize agent-based migration / movement within a dataset
+				</section> 
+
+				<section data-markdown data-background-image="./gmaps.png" data-background-size="100px" data-background-repeat="repeat">
+						## Data - Google Timeline Data
+						- Category: Agent based movement data
+						- Relationship: one-to-one
+						- Geometry Type: Hybrid of Point and Line Data
+						- Source Format: KML
+						- Attributes: Transportation Type / Category, Timespan,  Address
+						- Visualization Components: Time, Distance, Type (Transportation mode) 
+				</section> 
+				<section>
+					<h4>Data - Google Timeline Data</h4>
+					<img src="img/gmaps.png" height="400px"/>
+				</section> 
+				<section data-markdown>
+						#### Data - Internal Revenue Service <br> State-to-State (income) inflow data: 2015-2016
+						- Category: Migration dataset (not in a traditional sense)
+						- Relationship: one-to-many 
+						- Geometry Type: Polygon, but utilized in map as centroid
+						- Source Format: CSV
+						- Visual Components: Quantity, Distance
+						- Attributes: Origin state, destination state, state name, number of tax returns, number of tax exemptions, adjusted gross income (AGI)
+				</section>
+
+				<section data-markdown>
+						## Methods - Life Cycle
+						Load -> Construct -> Apply
+						-  The motion module will follow a similar life cycle to the modules provided within the existing API. 
+						-  The module will be loaded in via AMD, constructed within the script, and applied via methods within the module
+				</section>
+
+				<section data-markdown>
+					## Methods - Loading
+					<pre><code data-trim data-noescape>
+							require([“//master/app/motion-module.js”], 
+							function(Motion) { 
+								var MyMotionLayer = new Motion({arguments})
+							})
+								</code></pre>
+					- This shows how the module is loaded in and constructed
+				</section>
+				<section>
+					<h3>Properties</h3>
+						<table class="tableizer-table">
+								<thead><tr class="tableizer-firstrow"><th>Property</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr></thead><tbody>
+								 <tr><td>Source</td><td>Object</td><td>Yes</td><td>No default</td><td>This is the source for the data, can be a REST URL* or geojson * REST URL will only be supported after geojson is supported, time permitting.</td></tr>
+								 <tr><td>Relationship</td><td>Object</td><td>Yes</td><td>No default</td><td>Relation type. i.e. 1 to 1, 1to many. Object will also ask for origin and destination fields within the dataset.</td></tr>
+								 <tr><td>SourceType</td><td>String</td><td>No</td><td>"geojson"</td><td>Specified by user to tell the module how to read the source parameter.</td></tr>
+								 <tr><td>Features</td><td>Object</td><td>No</td><td>None</td><td>Constructed from the source data, contains all geographic features within an array.</td></tr>
+								 <tr><td>LayerLines</td><td>Object</td><td>No</td><td>None</td><td>This property is constructed automatically from the source data. It stores all line data within the geojson or layer, and assimilates that data into the ESRI schema.</td></tr>
+								 <tr><td>LayerPoints</td><td>Object</td><td>No</td><td>None</td><td>Auto constructed from source. stores all point data within the geojson or layer, and assimilates that data into the ESRI schema.  </td></tr>
+								 <tr><td>Easing</td><td>String</td><td>No</td><td>easeInSine</td><td>Used to specify linear movement over time. The module will support 5 types of easing, selected from http://easings.net/</td></tr>
+								 <tr><td>Speed</td><td>Int</td><td>No</td><td>1</td><td>Specifies speed of transition, still need to determine range of this param.</td></tr>
+								 <tr><td>Color</td><td>Object</td><td>No</td><td>Red</td><td>Will accept a dojo.color object to set color.</td></tr>
+								</tbody></table>
+				</section>
+				<section>
+					<h3>Methods</h3>					
+						<table class="tableizer-table" style="font-size: 22px"> 
+						<thead><tr class="tableizer-firstrow"><th>Method</th><th>Description</th></tr></thead><tbody>
+						 <tr><td>setSpeed(<num>)</td><td>Alters animation speed of existing implenentation</td></tr>
+						 <tr><td>setColor(<dojo.color>)</td><td>Alters existing color for lines and points</td></tr>
+						 <tr><td>getSpeed()</td><td>Returns current specified speed</td></tr>
+						 <tr><td>getColor()</td><td>Returns color of animation</td></tr>
+						 <tr><td>pause()</td><td>Pauses the animation</td></tr>
+						</tbody></table>
+						<p>Haven't come up with all the methods just yet, but here's some examples</p>
+				</section>
+
+					<section data-markdown>
+							## Methods - Error Handling
+							- The module needs to be able return errors if the user inputs the wrong type of data, has a missing parameter, etc. 
+							- This will be accomplished using try / catch statements within each constructor, getter, setter, and method. 
+							- The module will handle any errors and send them back to the user via the console.
+						</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
