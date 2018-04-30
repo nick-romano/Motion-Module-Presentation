@@ -190,19 +190,24 @@
 							- This will be accomplished using try / catch statements within each constructor, getter, setter, and method. 
 							- The module will handle any errors and send them back to the user via the console.
 						</section>
-
-						<section data-markdown>
-							## Preliminary Results
-							- Mostly been working on data model and classes
-							- Not much visual results so far, and thats frustrating
-							- But I think with a good data model and class heirarchy it will be better in the long run
-							- Working with d3 interpolateLine() to create lines between Points
-						</section>
 						<section>
 							<h6>Preliminary Results - Data model</h6>
 							<img src="img/motionLayer.png" height="400px" />
 							<p style="font-size: 26px">Data model so far- creates two properties that contain corresponding geometry types and
 							converts them to esri graphics that can be used in the map</p>
+						</section>
+						<section data-markdown>
+							## Preliminary Results - HTML5 Canvas
+							<pre><code data-trim data-noescape>
+										 var proto = document.createElement("canvas");
+										 this.ctx = proto.getContext("2d"); this.ctx.canvas.style.position = 'absolute'; 
+										 this.ctx.canvas.style.zIndex = '0'; 
+										 initCanvas.insertAdjacentElement('beforebegin', this.ctx.canvas)
+									</code></pre>
+							- The custom data layers are being used to create a custom HTML canvas element that is being placed adjacent to the Esri map
+								canvas.
+							- This DOM architecture (placing the custom element adjacent) preserves the user’s ability to interact with the underlying
+								Esri map, while the custom graphics are visible.
 						</section>
 						<section>
 								<h3>Thank you for listening!</h3>
