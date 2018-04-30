@@ -207,8 +207,21 @@
 									</code></pre>
 							- The custom data layers are being used to create a custom HTML canvas element that is being placed adjacent to the Esri map
 								canvas.
-							- This DOM architecture (placing the custom element adjacent) preserves the user’s ability to interact with the underlying
+							- This DOM architecture preserves the user’s ability to interact with the underlying
 								Esri map, while the custom graphics are visible.
+						</section>
+						<section data-markdown>
+							## Preliminary Results - Panning and zooming
+							- Handling zooming is done through the view.on('event') methods within the API
+							- Basically redraw the graphics each time the map is interacted with
+							- Working on preserving animation progress when redrawing, instead of the animation starting over again
+						</section>
+						<section data-markdown>
+							## Preliminary Results - Handling Time Data
+							- Animations in JavaScript are handled through a variable that iterates on each step
+							- Need to link the interating variable to a virtual timeline 
+							- Planning to use a date object that goes forward an hour on each iteration
+							- Check geospatial data to see if there is a record to activate in that time frame, if so fire the animation
 						</section>
 						<section>
 								<h3>Thank you for listening!</h3>
