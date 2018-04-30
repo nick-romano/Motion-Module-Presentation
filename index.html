@@ -60,7 +60,8 @@
 				</section>
 				<section data-markdown>
 					## Introduction
-					- Current APIs such as the ESRI ArcGIS for JavaScript API, the Google Maps API, and Leaflet, allow for quick rendering of point, line, and polygon data on a map
+					- Use of web mapping APIs has become commonplace in organizations throughout many fields and disciplines
+					- Current APIs, such as the ESRI ArcGIS for JavaScript API, the Google Maps API, and Leaflet, allow for quick rendering of point, line, and polygon data on a web based map
 					- But none have an easy way to create animations between multiple points, which could add extra information to a mapping visualization project. 
 				</section>
 				<section data-markdown>
@@ -81,11 +82,10 @@
 					</section>
 					<section data-markdown>
 						## Bertin's Principle Types of Movement
-						- continuous motion
-						- generation of points
-						- lines or areas 
-						- variable speeds
-						- and systems of relations (Bertin and Berg 2010). 
+						- Continuous motion
+						- Generation of points, lines or areas 
+						- Variable speeds
+						- Systems of relations (Bertin and Berg 2010). 
 					</section>
 					<section>
 						<h3>Continuous Motion</h3>
@@ -106,10 +106,10 @@
 
 				<section data-markdown>
 						## Objectives
-						- Produce JavaScript modules that can be loaded through Dojo AMD into version 4 of the ArcGIS for JavaScript API
+						- Produce a JavaScript module that can be loaded through Dojo AMD into version 4 of the ArcGIS for JavaScript API
 						- Support 2D visualizations of temporal data
-						- Enable developers to easily render an animated path between two points within a mapping visualization
-						- Be able to interpret date information and will be able to visualize agent-based migration / movement within a dataset
+						- Be able to interpret date information from source data
+						- Be able to visualize agent based movement within a dataset
 				</section> 
 
 				<section data-markdown data-background-image="./gmaps.png" data-background-size="100px" data-background-repeat="repeat">
@@ -145,9 +145,13 @@
 				<section data-markdown>
 					## Methods - Loading
 					<pre><code data-trim data-noescape>
+							// load
 							require([“//master/app/motion-module.js”], 
 							function(Motion) { 
+								// construct
 								var MyMotionLayer = new Motion({arguments})
+								// apply
+								Motion.addToMap()
 							})
 								</code></pre>
 					- This shows how the module is loaded in and constructed
